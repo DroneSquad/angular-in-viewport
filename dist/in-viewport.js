@@ -8,6 +8,10 @@
 (function (angular) {
     'use strict';
 
+    angular
+        .module('in-viewport')
+        .directive('viewportEnter', viewportEnterDefinition);
+
     /**
      * Directive definition for viewport-enter
      */
@@ -38,13 +42,13 @@
         }
     }
 
-    angular
-        .module('in-viewport')
-        .directive('viewportEnter', viewportEnterDefinition);
-
 })(window.angular);
 (function (angular) {
     'use strict';
+
+    angular
+        .module('in-viewport')
+        .directive('viewportLeave', viewportLeaveDefinition);
 
     /**
      * Directive definition for viewport-enter
@@ -76,14 +80,13 @@
         }
     }
 
-    angular
-        .module('in-viewport')
-        .directive('viewportLeave', viewportLeaveDefinition);
-
 })(window.angular);
 (function (angular) {
     'use strict';
 
+    angular
+        .module('in-viewport')
+        .directive('viewport', ViewportDefinition);
 
     /**
      * Directive Definition for Viewport
@@ -92,7 +95,6 @@
     {
         return {
             restrict: 'A',
-            scope: true,
             controller: ViewportController,
             link: ViewportLinking
         };
@@ -178,9 +180,18 @@
          * Set the viewport element
          * @param element
          */
-        function setViewport (element)
+        function setViewport(element)
         {
             viewport = element;
+        }
+
+        /**
+         * Return the current viewport
+         * @returns {*}
+         */
+        function getViewport()
+        {
+            return viewport;
         }
 
         /**
@@ -225,13 +236,24 @@
             items[index][event] = callback;
         }
 
+        /**
+         * Get list of items
+         * @returns {Array}
+         */
+        function getItems()
+        {
+            return items;
+        }
+
         angular.element($window)
             .on('resize', updateDelayed)
             .on('orientationchange', updateDelayed);
 
-        this.setViewport = setViewport;
-        this.add = add;
-        this.updateDelayed = updateDelayed;
+        this.setViewport    = setViewport;
+        this.getViewport    = getViewport;
+        this.add            = add;
+        this.getItems       = getItems;
+        this.updateDelayed  = updateDelayed;
     }
 
     // DI for controller
@@ -252,16 +274,11 @@
         iElement.on('scroll', viewport.updateDelayed);
 
         // Trick angular in calling this on digest
-        $scope.$watch(function () {
+        $scope.$evalAsync(function () {
             viewport.updateDelayed();
         });
     }
 
     ViewportLinking.$inject = ['$scope', 'iElement', 'iAttrs', 'viewport'];
-
-    angular
-        .module('in-viewport')
-        .directive('viewport', ViewportDefinition);
-
 
 })(window.angular);

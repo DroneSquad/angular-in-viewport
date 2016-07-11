@@ -12,7 +12,6 @@
     {
         return {
             restrict: 'A',
-            scope: true,
             controller: ViewportController,
             link: ViewportLinking
         };
@@ -120,7 +119,7 @@
             window.clearTimeout(updateTimeout);
             updateTimeout = window.setTimeout(function () {
                 update();
-            }, 100);
+            }, 500);
         }
 
         /**
@@ -192,7 +191,7 @@
         iElement.on('scroll', viewport.updateDelayed);
 
         // Trick angular in calling this on digest
-        $scope.$watch(function () {
+        $scope.$evalAsync(function () {
             viewport.updateDelayed();
         });
     }
