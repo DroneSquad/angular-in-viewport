@@ -278,9 +278,11 @@
             viewport.updateDelayed();
         });
 
-				$scope.$on('checkVisible', function () {
-            viewport.updateDelayed();
-				});
+        if (iAttrs.viewportWatch) {
+            $scope.$watch(iAttrs.viewportWatch, function () {
+                viewport.updateDelayed();
+            });
+        }
     }
 
     ViewportLinking.$inject = ['$scope', 'iElement', 'iAttrs', 'viewport'];
