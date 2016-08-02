@@ -202,7 +202,7 @@
             window.clearTimeout(updateTimeout);
             updateTimeout = window.setTimeout(function () {
                 update();
-            }, 100);
+            }, 500);
         }
 
         /**
@@ -277,6 +277,10 @@
         $scope.$evalAsync(function () {
             viewport.updateDelayed();
         });
+
+				$scope.$on('checkVisible', function () {
+            viewport.updateDelayed();
+				});
     }
 
     ViewportLinking.$inject = ['$scope', 'iElement', 'iAttrs', 'viewport'];

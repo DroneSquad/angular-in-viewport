@@ -194,6 +194,10 @@
         $scope.$evalAsync(function () {
             viewport.updateDelayed();
         });
+
+				$scope.$on('checkVisible', function () {
+            viewport.updateDelayed();
+				});
     }
 
     ViewportLinking.$inject = ['$scope', 'iElement', 'iAttrs', 'viewport'];
